@@ -49,8 +49,9 @@ const Dashboard = () => {
   if (error) return <Error message={error} onRetry={loadDashboardData} />;
 
   // Calculate current month data
-  const monthStart = startOfMonth(currentMonth);
-const currentMonthTransactions = transactions.filter(transaction => {
+const monthStart = startOfMonth(currentMonth);
+  const monthEnd = endOfMonth(currentMonth);
+  const currentMonthTransactions = transactions.filter(transaction => {
     const transactionDate = new Date(transaction.date_c);
     return transactionDate >= monthStart && transactionDate <= monthEnd;
   });

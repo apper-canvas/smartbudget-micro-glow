@@ -253,5 +253,3 @@ class BudgetService {
 }
 
 export const budgetService = new BudgetService();
-
-export const budgetService = new BudgetService();
