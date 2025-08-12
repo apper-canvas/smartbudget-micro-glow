@@ -10,9 +10,69 @@ class TransactionService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async getAll() {
+async getAll() {
     await this.delay();
     return [...this.transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  // Advanced search and filtering
+  async searchTransactions(transactions, filters = {}) {
+    // No delay needed for client-side filtering
+    const {
+      searchTerm = "",
+      type = "",
+      startDate = "",
+      endDate = "",
+      category = "",
+      minAmount = null,
+      maxAmount = null
+    } = filters;
+
+    return transactions.filter(transaction => {
+      // Search term filter (description)
+      if (searchTerm && !transaction.description.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return false;
+      }
+
+      // Type filter
+      if (type && transaction.type !== type) {
+        return false;
+      }
+
+      // Date range filter
+      if (startDate || endDate) {
+        const transactionDate = new Date(transaction.date);
+        
+        if (startDate) {
+          const start = new Date(startDate);
+          start.setHours(0, 0, 0, 0);
+          if (transactionDate < start) return false;
+        }
+        
+        if (endDate) {
+          const end = new Date(endDate);
+          end.setHours(23, 59, 59, 999);
+          if (transactionDate > end) return false;
+        }
+      }
+
+      // Category filter
+      if (category && transaction.category !== category) {
+        return false;
+      }
+
+      // Amount range filter
+      const amount = Math.abs(transaction.amount);
+      if (minAmount !== null && amount < minAmount) {
+        return false;
+      }
+      
+      if (maxAmount !== null && amount > maxAmount) {
+        return false;
+      }
+
+      return true;
+    });
   }
 
   async getById(id) {
