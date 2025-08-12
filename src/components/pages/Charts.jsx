@@ -2,9 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { format, subMonths } from "date-fns";
 import Card from "@/components/atoms/Card";
+import Button from "@/components/atoms/Button";
+import ApperIcon from "@/components/ApperIcon";
 import ExpensePieChart from "@/components/organisms/ExpensePieChart";
 import SpendingTrendChart from "@/components/organisms/SpendingTrendChart";
-
 const Charts = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [trendMonths, setTrendMonths] = useState(6);
@@ -35,7 +36,7 @@ const Charts = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="p-4">
+<Card className="p-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h2 className="text-lg font-display font-semibold text-gray-900 mb-2">
@@ -78,6 +79,17 @@ const Charts = () => {
                   <option value={12}>12 Months</option>
                 </select>
               </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.location.href = "/reports"}
+                className="flex items-center gap-2"
+              >
+                <ApperIcon name="FileText" className="w-4 h-4" />
+                <span className="hidden sm:inline">Generate Reports</span>
+                <span className="sm:hidden">Reports</span>
+              </Button>
             </div>
           </div>
         </Card>

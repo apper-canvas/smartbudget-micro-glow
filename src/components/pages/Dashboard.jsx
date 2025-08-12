@@ -131,7 +131,7 @@ const Dashboard = () => {
           <h2 className="text-lg font-display font-semibold text-gray-900 mb-4">
             Quick Actions
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Button
               variant="outline"
               className="h-20 flex-col space-y-2"
@@ -159,10 +159,10 @@ const Dashboard = () => {
             <Button
               variant="outline"
               className="h-20 flex-col space-y-2"
-              onClick={() => window.location.href = "/transactions"}
+              onClick={() => window.location.href = "/reports"}
             >
-              <ApperIcon name="Receipt" className="w-5 h-5" />
-              <span className="text-sm">View All</span>
+              <ApperIcon name="FileText" className="w-5 h-5" />
+              <span className="text-sm">Generate Reports</span>
             </Button>
           </div>
         </Card>

@@ -34,16 +34,25 @@ const Transactions = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <p className="text-gray-600">
             Track your income and expenses to stay on top of your finances.
           </p>
         </div>
-        <Button onClick={handleAddTransaction}>
-          <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
-          Add Transaction
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => window.location.href = "/reports"}
+          >
+            <ApperIcon name="FileText" className="w-4 h-4 mr-2" />
+            Reports
+          </Button>
+          <Button onClick={handleAddTransaction}>
+            <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
+            Add Transaction
+          </Button>
+        </div>
       </div>
 
       {/* Form Modal */}
