@@ -74,7 +74,7 @@ useEffect(() => {
         maxAmount: amountRange.maxAmount ? parseFloat(amountRange.maxAmount) : null
       };
 
-      const filtered = await transactionService.searchTransactions(transactions, filters);
+const filtered = await transactionService.searchTransactions(transactions, filters);
       
       // Apply sorting
       const sorted = filtered.sort((a, b) => {
@@ -252,11 +252,11 @@ if (loading) return <Loading type="table" />;
                       onChange={(e) => setCategoryFilter(e.target.value)}
                     >
                       <option value="">All Categories</option>
-                      {categories.map((category) => (
-                        <option key={category.Id} value={category.name}>
-                          {category.name}
-                        </option>
-                      ))}
+{categories.map((category) => (
+                         <option key={category.Id} value={category.Name}>
+                           {category.Name}
+                         </option>
+                       ))}
                     </Select>
                   </div>
 
@@ -328,36 +328,36 @@ if (loading) return <Loading type="table" />;
               transition={{ delay: index * 0.05 }}
               className="p-4 hover:bg-gray-50 transition-colors duration-200"
             >
-              <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className={`p-2 rounded-full ${
-                    transaction.type === "income" ? "bg-green-50" : "bg-red-50"
+                    transaction.type_c === "income" ? "bg-green-50" : "bg-red-50"
                   }`}>
                     <CategoryIcon 
-                      category={transaction.category} 
+                      category={transaction.category_c} 
                       className={`w-5 h-5 ${
-                        transaction.type === "income" ? "text-green-600" : "text-red-600"
+                        transaction.type_c === "income" ? "text-green-600" : "text-red-600"
                       }`}
                     />
                   </div>
                   
                   <div>
                     <h3 className="font-medium text-gray-900">
-                      {transaction.description}
+                      {transaction.description_c}
                     </h3>
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
-                      <span>{transaction.category}</span>
+                      <span>{transaction.category_c}</span>
                       <span>•</span>
-                      <span>{format(new Date(transaction.date), "MMM d, yyyy")}</span>
+                      <span>{format(new Date(transaction.date_c), "MMM d, yyyy")}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
+<div className="flex items-center space-x-4">
                   <span className={`font-semibold text-lg ${
-                    transaction.type === "income" ? "text-green-600" : "text-red-600"
+                    transaction.type_c === "income" ? "text-green-600" : "text-red-600"
                   }`}>
-                    {formatAmount(transaction.amount, transaction.type)}
+                    {formatAmount(transaction.amount_c, transaction.type_c)}
                   </span>
 
                   <div className="flex items-center space-x-2">

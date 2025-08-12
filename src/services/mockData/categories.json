@@ -1,38 +1,43 @@
 [
   {
     "Id": 1,
-    "name": "Food & Dining",
-    "type": "expense",
-    "icon": "UtensilsCrossed",
-    "color": "#f59e0b"
+    "Name": "Food & Dining",
+    "Tags": "food,dining",
+    "type_c": "expense",
+    "icon_c": "UtensilsCrossed",
+    "color_c": "#f59e0b"
   },
   {
     "Id": 2,
-    "name": "Transportation",
-    "type": "expense",
-    "icon": "Car",
-    "color": "#3b82f6"
+    "Name": "Transportation",
+    "Tags": "transport,travel",
+    "type_c": "expense",
+    "icon_c": "Car",
+    "color_c": "#3b82f6"
   },
   {
     "Id": 3,
-    "name": "Entertainment",
-    "type": "expense",
-    "icon": "Music",
-    "color": "#8b5cf6"
+    "Name": "Entertainment",
+    "Tags": "fun,leisure",
+    "type_c": "expense",
+    "icon_c": "Music",
+    "color_c": "#8b5cf6"
   },
   {
     "Id": 4,
-    "name": "Shopping",
-    "type": "expense",
-    "icon": "ShoppingBag",
-    "color": "#ec4899"
+    "Name": "Shopping",
+    "Tags": "retail,purchase",
+    "type_c": "expense",
+    "icon_c": "ShoppingBag",
+    "color_c": "#ec4899"
   },
   {
     "Id": 5,
-    "name": "Health",
-    "type": "expense",
-    "icon": "Heart",
-    "color": "#ef4444"
+    "Name": "Health",
+    "Tags": "medical,wellness",
+    "type_c": "expense",
+    "icon_c": "Heart",
+    "color_c": "#ef4444"
   },
   {
     "Id": 6,

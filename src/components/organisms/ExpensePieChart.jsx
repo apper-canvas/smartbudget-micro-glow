@@ -21,15 +21,15 @@ const ExpensePieChart = ({ selectedDate = new Date() }) => {
     setError("");
     
     try {
-      const transactions = await transactionService.getAll();
+const transactions = await transactionService.getAll();
       
       // Filter expenses for the selected month
       const monthStart = startOfMonth(selectedDate);
       const monthEnd = endOfMonth(selectedDate);
       
       const monthlyExpenses = transactions.filter(transaction => {
-        const transactionDate = new Date(transaction.date);
-        return transaction.type === "expense" && 
+        const transactionDate = new Date(transaction.date_c);
+        return transaction.type_c === "expense" && 
                transactionDate >= monthStart && 
                transactionDate <= monthEnd;
       });
@@ -42,8 +42,8 @@ const ExpensePieChart = ({ selectedDate = new Date() }) => {
 
       // Group expenses by category
       const expensesByCategory = monthlyExpenses.reduce((acc, transaction) => {
-        const category = transaction.category;
-        acc[category] = (acc[category] || 0) + transaction.amount;
+        const category = transaction.category_c;
+        acc[category] = (acc[category] || 0) + transaction.amount_c;
         return acc;
       }, {});
 

@@ -1,31 +1,39 @@
 [
   {
     "Id": 1,
-    "category": "Food & Dining",
-    "amount": 500,
-    "month": "January",
-    "year": 2024
+    "Name": "Food & Dining Budget",
+    "Tags": "food,dining,budget",
+    "category_c": "Food & Dining",
+    "amount_c": 500,
+    "month_c": "January",
+    "year_c": 2024
   },
   {
     "Id": 2,
-    "category": "Transportation",
-    "amount": 200,
-    "month": "January",
-    "year": 2024
+    "Name": "Transportation Budget",
+    "Tags": "transport,budget",
+    "category_c": "Transportation",
+    "amount_c": 200,
+    "month_c": "January",
+    "year_c": 2024
   },
   {
     "Id": 3,
-    "category": "Entertainment",
-    "amount": 300,
-    "month": "January",
-    "year": 2024
+    "Name": "Entertainment Budget",
+    "Tags": "entertainment,budget",
+    "category_c": "Entertainment",
+    "amount_c": 300,
+    "month_c": "January",
+    "year_c": 2024
   },
   {
     "Id": 4,
-    "category": "Shopping",
-    "amount": 400,
-    "month": "January",
-    "year": 2024
+    "Name": "Shopping Budget",
+    "Tags": "shopping,budget",
+    "category_c": "Shopping",
+    "amount_c": 400,
+    "month_c": "January",
+    "year_c": 2024
   },
   {
     "Id": 5,

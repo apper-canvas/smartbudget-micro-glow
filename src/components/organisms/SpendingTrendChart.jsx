@@ -21,7 +21,7 @@ const SpendingTrendChart = ({ months = 6 }) => {
     setError("");
     
     try {
-      const transactions = await transactionService.getAll();
+const transactions = await transactionService.getAll();
       
       if (transactions.length === 0) {
         setChartData({ series: [], categories: [] });
@@ -46,15 +46,15 @@ const SpendingTrendChart = ({ months = 6 }) => {
 
       // Group transactions by month
       transactions.forEach(transaction => {
-        const transactionDate = new Date(transaction.date);
+        const transactionDate = new Date(transaction.date_c);
         const monthKey = format(transactionDate, "MMM yyyy");
         
         const monthData = monthlyData.find(m => m.month === monthKey);
         if (monthData) {
-          if (transaction.type === "income") {
-            monthData.income += transaction.amount;
+          if (transaction.type_c === "income") {
+            monthData.income += transaction.amount_c;
           } else {
-            monthData.expenses += transaction.amount;
+            monthData.expenses += transaction.amount_c;
           }
         }
       });

@@ -5,8 +5,8 @@ import ApperIcon from "@/components/ApperIcon";
 import CategoryIcon from "@/components/molecules/CategoryIcon";
 
 const BudgetCard = ({ budget, spent = 0, onEdit, index = 0 }) => {
-  const percentage = budget.amount > 0 ? (spent / budget.amount) * 100 : 0;
-  const remaining = budget.amount - spent;
+  const percentage = budget.amount_c > 0 ? (spent / budget.amount_c) * 100 : 0;
+  const remaining = budget.amount_c - spent;
   
   const getProgressColor = () => {
     if (percentage >= 100) return "bg-red-500";
@@ -37,12 +37,12 @@ const BudgetCard = ({ budget, spent = 0, onEdit, index = 0 }) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-gray-50 rounded-full">
-              <CategoryIcon category={budget.category} className="w-5 h-5 text-gray-600" />
+              <CategoryIcon category={budget.category_c} className="w-5 h-5 text-gray-600" />
             </div>
             <div>
-              <h3 className="font-medium text-gray-900">{budget.category}</h3>
+              <h3 className="font-medium text-gray-900">{budget.category_c}</h3>
               <p className="text-sm text-gray-500">
-                {budget.month} {budget.year}
+                {budget.month_c} {budget.year_c}
               </p>
             </div>
           </div>
@@ -65,7 +65,7 @@ const BudgetCard = ({ budget, spent = 0, onEdit, index = 0 }) => {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Budget</span>
-            <span className="font-medium">{formatAmount(budget.amount)}</span>
+            <span className="font-medium">{formatAmount(budget.amount_c)}</span>
           </div>
 
           {/* Progress Bar */}

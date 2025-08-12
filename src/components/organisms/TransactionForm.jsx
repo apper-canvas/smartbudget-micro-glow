@@ -24,12 +24,12 @@ const TransactionForm = ({ transaction, onSuccess, onCancel }) => {
     loadCategories();
     
     if (transaction) {
-      setFormData({
-        type: transaction.type,
-        amount: transaction.amount.toString(),
-        category: transaction.category,
-        description: transaction.description,
-        date: format(new Date(transaction.date), "yyyy-MM-dd")
+setFormData({
+        type_c: transaction.type_c,
+        amount_c: transaction.amount_c.toString(),
+        category_c: transaction.category_c,
+        description_c: transaction.description_c,
+        date_c: format(new Date(transaction.date_c), "yyyy-MM-dd")
       });
     }
   }, [transaction]);
@@ -96,11 +96,21 @@ const TransactionForm = ({ transaction, onSuccess, onCancel }) => {
         date: new Date(formData.date).toISOString(),
       };
 
+const apiData = {
+        Name: `${formData.type_c} transaction`,
+        Tags: "",
+        type_c: formData.type_c,
+        amount_c: parseFloat(formData.amount_c),
+        category_c: formData.category_c,
+        description_c: formData.description_c,
+        date_c: new Date(formData.date_c).toISOString()
+      };
+
       if (transaction) {
-        await transactionService.update(transaction.Id, transactionData);
+        await transactionService.update(transaction.Id, apiData);
         toast.success("Transaction updated successfully!");
       } else {
-        await transactionService.create(transactionData);
+        await transactionService.create(apiData);
         toast.success("Transaction added successfully!");
       }
 
@@ -189,9 +199,9 @@ const TransactionForm = ({ transaction, onSuccess, onCancel }) => {
           required
         >
           <option value="">Select a category</option>
-          {filteredCategories.map((category) => (
-            <option key={category.Id} value={category.name}>
-              {category.name}
+{filteredCategories.map((category) => (
+            <option key={category.Id} value={category.Name}>
+              {category.Name}
             </option>
           ))}
         </FormField>

@@ -1,74 +1,200 @@
-import categoriesData from "@/services/mockData/categories.json";
-
 class CategoryService {
   constructor() {
-    this.categories = [...categoriesData];
-  }
-
-  // Simulate API delay
-  delay(ms = 300) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    const { ApperClient } = window.ApperSDK;
+    this.apperClient = new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
+    this.tableName = "category_c";
   }
 
   async getAll() {
-    await this.delay();
-    return [...this.categories];
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "type_c" } },
+          { field: { Name: "icon_c" } },
+          { field: { Name: "color_c" } }
+        ]
+      };
+
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching categories:", error.message);
+      throw error;
+    }
   }
 
   async getById(id) {
-    await this.delay();
-    const category = this.categories.find(c => c.Id === parseInt(id));
-    if (!category) {
-      throw new Error("Category not found");
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "type_c" } },
+          { field: { Name: "icon_c" } },
+          { field: { Name: "color_c" } }
+        ]
+      };
+
+      const response = await this.apperClient.getRecordById(this.tableName, parseInt(id), params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching category with ID ${id}:`, error.message);
+      throw error;
     }
-    return { ...category };
   }
 
   async getByType(type) {
-    await this.delay();
-    return this.categories.filter(category => category.type === type);
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "type_c" } },
+          { field: { Name: "icon_c" } },
+          { field: { Name: "color_c" } }
+        ],
+        where: [
+          {
+            FieldName: "type_c",
+            Operator: "EqualTo",
+            Values: [type]
+          }
+        ]
+      };
+
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching categories by type:", error.message);
+      throw error;
+    }
   }
 
   async create(categoryData) {
-    await this.delay();
-    
-    const newCategory = {
-      ...categoryData,
-      Id: Math.max(...this.categories.map(c => c.Id)) + 1,
-    };
+    try {
+      const params = {
+        records: [
+          {
+            Name: categoryData.Name,
+            Tags: categoryData.Tags || "",
+            type_c: categoryData.type_c,
+            icon_c: categoryData.icon_c,
+            color_c: categoryData.color_c
+          }
+        ]
+      };
 
-    this.categories.push(newCategory);
-    return { ...newCategory };
+      const response = await this.apperClient.createRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create category ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          throw new Error("Failed to create category");
+        }
+
+        return response.results[0].data;
+      }
+    } catch (error) {
+      console.error("Error creating category:", error.message);
+      throw error;
+    }
   }
 
   async update(id, categoryData) {
-    await this.delay();
-    
-    const index = this.categories.findIndex(c => c.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Category not found");
+    try {
+      const params = {
+        records: [
+          {
+            Id: parseInt(id),
+            Name: categoryData.Name,
+            Tags: categoryData.Tags || "",
+            type_c: categoryData.type_c,
+            icon_c: categoryData.icon_c,
+            color_c: categoryData.color_c
+          }
+        ]
+      };
+
+      const response = await this.apperClient.updateRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to update category ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          throw new Error("Failed to update category");
+        }
+
+        return response.results[0].data;
+      }
+    } catch (error) {
+      console.error("Error updating category:", error.message);
+      throw error;
     }
-
-    const updatedCategory = {
-      ...this.categories[index],
-      ...categoryData,
-      Id: parseInt(id),
-    };
-
-    this.categories[index] = updatedCategory;
-    return { ...updatedCategory };
   }
 
   async delete(id) {
-    await this.delay();
-    
-    const index = this.categories.findIndex(c => c.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Category not found");
-    }
+    try {
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
 
-    const deletedCategory = this.categories.splice(index, 1)[0];
-    return { ...deletedCategory };
+      const response = await this.apperClient.deleteRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to delete category ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          throw new Error("Failed to delete category");
+        }
+
+        return response.results[0].data;
+      }
+    } catch (error) {
+      console.error("Error deleting category:", error.message);
+      throw error;
+    }
   }
 }
 

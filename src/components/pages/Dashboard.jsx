@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import { format, startOfMonth, endOfMonth } from "date-fns";
+import { endOfMonth, format, startOfMonth } from "date-fns";
+import { transactionService } from "@/services/api/transactionService";
+import { budgetService } from "@/services/api/budgetService";
+import ApperIcon from "@/components/ApperIcon";
 import SummaryCard from "@/components/molecules/SummaryCard";
-import Button from "@/components/atoms/Button";
-import Card from "@/components/atoms/Card";
+import CategoryIcon from "@/components/molecules/CategoryIcon";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import ApperIcon from "@/components/ApperIcon";
-import CategoryIcon from "@/components/molecules/CategoryIcon";
-import { transactionService } from "@/services/api/transactionService";
-import { budgetService } from "@/services/api/budgetService";
-
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Transactions from "@/components/pages/Transactions";
+import Charts from "@/components/pages/Charts";
+import Reports from "@/components/pages/Reports";
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [budgets, setBudgets] = useState([]);
@@ -48,20 +50,18 @@ const Dashboard = () => {
 
   // Calculate current month data
   const monthStart = startOfMonth(currentMonth);
-  const monthEnd = endOfMonth(currentMonth);
-  
-  const currentMonthTransactions = transactions.filter(transaction => {
-    const transactionDate = new Date(transaction.date);
+const currentMonthTransactions = transactions.filter(transaction => {
+    const transactionDate = new Date(transaction.date_c);
     return transactionDate >= monthStart && transactionDate <= monthEnd;
   });
 
   const monthlyIncome = currentMonthTransactions
-    .filter(t => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter(t => t.type_c === "income")
+    .reduce((sum, t) => sum + t.amount_c, 0);
 
   const monthlyExpenses = currentMonthTransactions
-    .filter(t => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter(t => t.type_c === "expense")
+    .reduce((sum, t) => sum + t.amount_c, 0);
 
   const netIncome = monthlyIncome - monthlyExpenses;
 
@@ -70,19 +70,17 @@ const Dashboard = () => {
 
   // Get current month budgets
   const currentMonthBudgets = budgets.filter(budget => 
-    budget.month === format(currentMonth, "MMMM") && 
-    budget.year === currentMonth.getFullYear()
+    budget.month_c === format(currentMonth, "MMMM") && 
+    budget.year_c === currentMonth.getFullYear()
   );
-
-  // Calculate budget spending
+// Calculate budget spending
   const budgetProgress = currentMonthBudgets.map(budget => {
     const spent = currentMonthTransactions
-      .filter(t => t.type === "expense" && t.category === budget.category)
-      .reduce((sum, t) => sum + t.amount, 0);
+      .filter(t => t.type_c === "expense" && t.category_c === budget.category_c)
+      .reduce((sum, t) => sum + t.amount_c, 0);
     
-    return { ...budget, spent, percentage: budget.amount > 0 ? (spent / budget.amount) * 100 : 0 };
+    return { ...budget, spent, percentage: budget.amount_c > 0 ? (spent / budget.amount_c) * 100 : 0 };
   });
-
   const formatAmount = (amount, type = null) => {
     const formattedAmount = new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -130,8 +128,8 @@ const Dashboard = () => {
         <Card className="p-6">
           <h2 className="text-lg font-display font-semibold text-gray-900 mb-4">
             Quick Actions
-          </h2>
-<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Button
               variant="outline"
               className="h-20 flex-col space-y-2"
@@ -205,30 +203,30 @@ const Dashboard = () => {
                     key={transaction.Id}
                     className="flex items-center justify-between py-2"
                   >
-                    <div className="flex items-center space-x-3">
+<div className="flex items-center space-x-3">
                       <div className={`p-2 rounded-full ${
-                        transaction.type === "income" ? "bg-green-50" : "bg-red-50"
+                        transaction.type_c === "income" ? "bg-green-50" : "bg-red-50"
                       }`}>
                         <CategoryIcon 
-                          category={transaction.category} 
+                          category={transaction.category_c} 
                           className={`w-4 h-4 ${
-                            transaction.type === "income" ? "text-green-600" : "text-red-600"
+                            transaction.type_c === "income" ? "text-green-600" : "text-red-600"
                           }`}
                         />
                       </div>
                       <div>
                         <p className="font-medium text-gray-900 text-sm">
-                          {transaction.description}
+                          {transaction.description_c}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {transaction.category}
+                          {transaction.category_c}
                         </p>
                       </div>
                     </div>
-                    <span className={`font-semibold text-sm ${
-                      transaction.type === "income" ? "text-green-600" : "text-red-600"
+<span className={`font-semibold text-sm ${
+                      transaction.type_c === "income" ? "text-green-600" : "text-red-600"
                     }`}>
-                      {formatAmount(transaction.amount, transaction.type)}
+                      {formatAmount(transaction.amount_c, transaction.type_c)}
                     </span>
                   </div>
                 ))}
@@ -267,13 +265,13 @@ const Dashboard = () => {
                 actionLabel="Set Budget"
               />
             ) : (
-              <div className="space-y-4">
+<div className="space-y-4">
                 {budgetProgress.slice(0, 4).map((budget) => (
                   <div key={budget.Id} className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">{budget.category}</span>
+                      <span className="text-gray-600">{budget.category_c}</span>
                       <span className="font-medium">
-                        {formatAmount(budget.spent)} / {formatAmount(budget.amount)}
+                        {formatAmount(budget.spent)} / {formatAmount(budget.amount_c)}
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">

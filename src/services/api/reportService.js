@@ -21,49 +21,49 @@ class ReportService {
       ]);
 
       // Filter transactions for the selected month/year
-      const monthTransactions = transactions.filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+const monthTransactions = transactions.filter(transaction => {
+        const transactionDate = new Date(transaction.date_c);
         return format(transactionDate, "MMMM") === month && 
                transactionDate.getFullYear() === year;
       });
 
       // Calculate basic metrics
       const totalIncome = monthTransactions
-        .filter(t => t.type === "income")
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter(t => t.type_c === "income")
+        .reduce((sum, t) => sum + t.amount_c, 0);
 
       const totalExpenses = monthTransactions
-        .filter(t => t.type === "expense")
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter(t => t.type_c === "expense")
+        .reduce((sum, t) => sum + t.amount_c, 0);
 
       const netIncome = totalIncome - totalExpenses;
 
       // Get budgets for the selected month/year
       const monthBudgets = budgets.filter(budget => 
-        budget.month === month && budget.year === year
+        budget.month_c === month && budget.year_c === year
       );
 
       // Calculate budget variances
       const budgetVariances = monthBudgets.map(budget => {
         const spent = monthTransactions
-          .filter(t => t.type === "expense" && t.category === budget.category)
-          .reduce((sum, t) => sum + t.amount, 0);
+          .filter(t => t.type_c === "expense" && t.category_c === budget.category_c)
+          .reduce((sum, t) => sum + t.amount_c, 0);
 
         return {
-          category: budget.category,
-          budget: budget.amount,
+          category: budget.category_c,
+          budget: budget.amount_c,
           spent: spent,
-          variance: budget.amount - spent
+          variance: budget.amount_c - spent
         };
       });
 
       // Calculate category breakdown for expenses
       const categoryTotals = {};
       monthTransactions
-        .filter(t => t.type === "expense")
+        .filter(t => t.type_c === "expense")
         .forEach(transaction => {
-          categoryTotals[transaction.category] = 
-            (categoryTotals[transaction.category] || 0) + transaction.amount;
+          categoryTotals[transaction.category_c] = 
+            (categoryTotals[transaction.category_c] || 0) + transaction.amount_c;
         });
 
       const categoryBreakdown = Object.entries(categoryTotals)
@@ -76,11 +76,11 @@ class ReportService {
 
       // Get transaction details for CSV export
       const transactionDetails = monthTransactions.map(transaction => ({
-        date: format(new Date(transaction.date), "yyyy-MM-dd"),
-        type: transaction.type,
-        category: transaction.category,
-        description: transaction.description,
-        amount: transaction.amount
+        date: format(new Date(transaction.date_c), "yyyy-MM-dd"),
+        type: transaction.type_c,
+        category: transaction.category_c,
+        description: transaction.description_c,
+        amount: transaction.amount_c
       }));
 
       return {
@@ -94,7 +94,7 @@ class ReportService {
         transactionDetails,
         transactionCount: monthTransactions.length,
         averageTransaction: monthTransactions.length > 0 ? 
-          totalExpenses / monthTransactions.filter(t => t.type === "expense").length : 0
+          totalExpenses / monthTransactions.filter(t => t.type_c === "expense").length : 0
       };
     } catch (error) {
       throw new Error("Failed to generate report data");

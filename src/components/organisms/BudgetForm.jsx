@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import Button from "@/components/atoms/Button";
-import FormField from "@/components/molecules/FormField";
-import ApperIcon from "@/components/ApperIcon";
 import { budgetService } from "@/services/api/budgetService";
 import { categoryService } from "@/services/api/categoryService";
+import ApperIcon from "@/components/ApperIcon";
+import FormField from "@/components/molecules/FormField";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
 
 const BudgetForm = ({ budget, onSuccess, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -20,13 +21,12 @@ const BudgetForm = ({ budget, onSuccess, onCancel }) => {
 
   useEffect(() => {
     loadCategories();
-    
-    if (budget) {
+if (budget) {
       setFormData({
-        category: budget.category,
-        amount: budget.amount.toString(),
-        month: budget.month,
-        year: budget.year
+        category: budget.category_c || "",
+        amount: budget.amount_c?.toString() || "",
+        month: budget.month_c || "",
+        year: budget.year_c || new Date().getFullYear()
       });
     } else {
       // Set default month to current month
@@ -40,11 +40,11 @@ const BudgetForm = ({ budget, onSuccess, onCancel }) => {
     }
   }, [budget]);
 
-  const loadCategories = async () => {
+const loadCategories = async () => {
     try {
       const data = await categoryService.getAll();
       // Only show expense categories for budgets
-      const expenseCategories = data.filter(cat => cat.type === "expense");
+      const expenseCategories = data.filter(cat => cat.type_c === "expense");
       setCategories(expenseCategories);
     } catch (error) {
       toast.error("Failed to load categories");
@@ -96,19 +96,22 @@ const BudgetForm = ({ budget, onSuccess, onCancel }) => {
       return;
     }
 
-    setLoading(true);
+setLoading(true);
     try {
-      const budgetData = {
-        ...formData,
-        amount: parseFloat(formData.amount),
-        year: parseInt(formData.year)
+      const apiData = {
+        Name: `${formData.category} Budget`,
+        Tags: "",
+        category_c: formData.category,
+        amount_c: parseFloat(formData.amount),
+        month_c: formData.month,
+        year_c: parseInt(formData.year)
       };
 
       if (budget) {
-        await budgetService.update(budget.Id, budgetData);
+        await budgetService.update(budget.Id, apiData);
         toast.success("Budget updated successfully!");
       } else {
-        await budgetService.create(budgetData);
+        await budgetService.create(apiData);
         toast.success("Budget created successfully!");
       }
 
@@ -159,10 +162,10 @@ const BudgetForm = ({ budget, onSuccess, onCancel }) => {
           error={errors.category}
           required
         >
-          <option value="">Select a category</option>
+<option value="">Select a category</option>
           {categories.map((category) => (
-            <option key={category.Id} value={category.name}>
-              {category.name}
+            <option key={category.Id} value={category.Name}>
+              {category.Name}
             </option>
           ))}
         </FormField>

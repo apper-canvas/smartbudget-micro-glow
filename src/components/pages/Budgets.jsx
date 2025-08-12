@@ -82,21 +82,21 @@ const Budgets = () => {
   };
 
   // Filter budgets for selected month and year
-  const filteredBudgets = budgets.filter(budget => 
-    budget.month === selectedMonth && budget.year === selectedYear
+const filteredBudgets = budgets.filter(budget => 
+    budget.month_c === selectedMonth && budget.year_c === selectedYear
   );
 
   // Calculate spending for each budget
-  const budgetsWithSpending = filteredBudgets.map(budget => {
+const budgetsWithSpending = filteredBudgets.map(budget => {
     const spent = transactions
       .filter(transaction => {
-        const transactionDate = new Date(transaction.date);
-        return transaction.type === "expense" && 
-               transaction.category === budget.category &&
+        const transactionDate = new Date(transaction.date_c);
+        return transaction.type_c === "expense" && 
+               transaction.category_c === budget.category_c &&
                format(transactionDate, "MMMM") === selectedMonth &&
                transactionDate.getFullYear() === selectedYear;
       })
-      .reduce((sum, transaction) => sum + transaction.amount, 0);
+      .reduce((sum, transaction) => sum + transaction.amount_c, 0);
 
     return { ...budget, spent };
   });
