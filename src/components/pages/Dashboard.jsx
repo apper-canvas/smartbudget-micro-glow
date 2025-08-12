@@ -120,10 +120,12 @@ const monthStart = startOfMonth(currentMonth);
         />
       </div>
 
-      {/* Quick Actions */}
+{/* Quick Actions */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         transition={{ delay: 0.3 }}
       >
         <Card className="p-6">
@@ -168,10 +170,11 @@ const monthStart = startOfMonth(currentMonth);
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Transactions */}
+{/* Recent Transactions */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
+          whileHover={{ scale: 1.02 }}
           transition={{ delay: 0.4 }}
         >
           <Card className="p-6">
@@ -236,10 +239,11 @@ const monthStart = startOfMonth(currentMonth);
           </Card>
         </motion.div>
 
-        {/* Budget Overview */}
+{/* Budget Overview */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
+          whileHover={{ scale: 1.02 }}
           transition={{ delay: 0.5 }}
         >
           <Card className="p-6">
