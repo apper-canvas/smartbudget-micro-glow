@@ -1,0 +1,51 @@
+[
+  {
+    "Id": 1,
+    "category": "Food & Dining",
+    "amount": 500,
+    "month": "January",
+    "year": 2024
+  },
+  {
+    "Id": 2,
+    "category": "Transportation",
+    "amount": 200,
+    "month": "January",
+    "year": 2024
+  },
+  {
+    "Id": 3,
+    "category": "Entertainment",
+    "amount": 300,
+    "month": "January",
+    "year": 2024
+  },
+  {
+    "Id": 4,
+    "category": "Shopping",
+    "amount": 400,
+    "month": "January",
+    "year": 2024
+  },
+  {
+    "Id": 5,
+    "category": "Groceries",
+    "amount": 600,
+    "month": "January",
+    "year": 2024
+  },
+  {
+    "Id": 6,
+    "category": "Bills",
+    "amount": 1500,
+    "month": "January",
+    "year": 2024
+  },
+  {
+    "Id": 7,
+    "category": "Health",
+    "amount": 200,
+    "month": "January",
+    "year": 2024
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "Id": 1,
+    "name": "Food & Dining",
+    "type": "expense",
+    "icon": "UtensilsCrossed",
+    "color": "#f59e0b"
+  },
+  {
+    "Id": 2,
+    "name": "Transportation",
+    "type": "expense",
+    "icon": "Car",
+    "color": "#3b82f6"
+  },
+  {
+    "Id": 3,
+    "name": "Entertainment",
+    "type": "expense",
+    "icon": "Music",
+    "color": "#8b5cf6"
+  },
+  {
+    "Id": 4,
+    "name": "Shopping",
+    "type": "expense",
+    "icon": "ShoppingBag",
+    "color": "#ec4899"
+  },
+  {
+    "Id": 5,
+    "name": "Health",
+    "type": "expense",
+    "icon": "Heart",
+    "color": "#ef4444"
+  },
+  {
+    "Id": 6,
+    "name": "Education",
+    "type": "expense",
+    "icon": "BookOpen",
+    "color": "#06b6d4"
+  },
+  {
+    "Id": 7,
+    "name": "Bills",
+    "type": "expense",
+    "icon": "Receipt",
+    "color": "#6b7280"
+  },
+  {
+    "Id": 8,
+    "name": "Groceries",
+    "type": "expense",
+    "icon": "ShoppingCart",
+    "color": "#22c55e"
+  },
+  {
+    "Id": 9,
+    "name": "Travel",
+    "type": "expense",
+    "icon": "Plane",
+    "color": "#0ea5e9"
+  },
+  {
+    "Id": 10,
+    "name": "Other",
+    "type": "expense",
+    "icon": "Circle",
+    "color": "#64748b"
+  },
+  {
+    "Id": 11,
+    "name": "Salary",
+    "type": "income",
+    "icon": "Briefcase",
+    "color": "#16a34a"
+  },
+  {
+    "Id": 12,
+    "name": "Freelance",
+    "type": "income",
+    "icon": "Laptop",
+    "color": "#059669"
+  },
+  {
+    "Id": 13,
+    "name": "Business",
+    "type": "income",
+    "icon": "Building2",
+    "color": "#0d9488"
+  },
+  {
+    "Id": 14,
+    "name": "Investments",
+    "type": "income",
+    "icon": "TrendingUp",
+    "color": "#065f46"
+  },
+  {
+    "Id": 15,
+    "name": "Gifts",
+    "type": "income",
+    "icon": "Gift",
+    "color": "#047857"
+  }
+]
