@@ -13,7 +13,8 @@ import Error from '@/components/ui/Error';
 import Empty from '@/components/ui/Empty';
 
 const Goals = () => {
-  const [goals, setGoals] = useState([]);
+const [goals, setGoals] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -45,9 +46,22 @@ const Goals = () => {
     'Cancelled': 'bg-red-100 text-red-800'
   };
 
-  useEffect(() => {
-    loadGoals();
+useEffect(() => {
+    const loadData = async () => {
+      await Promise.all([loadGoals(), loadCategories()]);
+    };
+    loadData();
   }, []);
+
+  const loadCategories = async () => {
+    try {
+      const { categoryService } = await import('@/services/api/categoryService');
+      const categoriesData = await categoryService.getAll();
+      setCategories(categoriesData);
+    } catch (err) {
+      console.error('Error loading categories:', err);
+    }
+  };
 
   const loadGoals = async () => {
     setLoading(true);
@@ -62,7 +76,7 @@ const Goals = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -70,7 +84,8 @@ const Goals = () => {
       const submitData = {
         ...formData,
         target_amount_c: parseFloat(formData.target_amount_c),
-        target_date_c: formData.target_date_c ? new Date(formData.target_date_c).toISOString() : null
+        target_date_c: formData.target_date_c ? new Date(formData.target_date_c).toISOString() : null,
+        category_c: formData.category_c ? parseInt(formData.category_c) : null
       };
 
       if (editingGoal) {
@@ -90,7 +105,7 @@ const Goals = () => {
     }
   };
 
-  const handleEdit = (goal) => {
+const handleEdit = (goal) => {
     setEditingGoal(goal);
     setFormData({
       Name: goal.Name || '',
@@ -98,7 +113,7 @@ const Goals = () => {
       target_amount_c: goal.target_amount_c || '',
       target_date_c: goal.target_date_c ? format(new Date(goal.target_date_c), 'yyyy-MM-dd') : '',
       status_c: goal.status_c || 'Not Started',
-      category_c: goal.category_c?.Name || goal.category_c || '',
+      category_c: goal.category_c?.Id || goal.category_c || '',
       Tags: goal.Tags || ''
     });
     setShowForm(true);
@@ -385,7 +400,7 @@ const Goals = () => {
                     onChange={handleChange}
                   />
 
-                  <Select
+<Select
                     label="Status"
                     name="status_c"
                     value={formData.status_c}
@@ -393,12 +408,19 @@ const Goals = () => {
                     options={statusOptions}
                   />
 
-                  <Input
+                  <Select
                     label="Category"
                     name="category_c"
                     value={formData.category_c}
                     onChange={handleChange}
-                    placeholder="e.g., Savings"
+                    options={[
+                      { value: '', label: 'Select a category' },
+                      ...categories.map(cat => ({
+                        value: cat.Id,
+                        label: cat.Name
+                      }))
+                    ]}
+                    placeholder="Select a category"
                   />
 
                   <Input
